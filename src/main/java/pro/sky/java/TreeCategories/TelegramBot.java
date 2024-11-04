@@ -1,14 +1,17 @@
 package pro.sky.java.TreeCategories;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.springframework.beans.factory.annotation.Value;
 import pro.sky.java.TreeCategories.command.CommandContainer;
 import pro.sky.java.TreeCategories.service.SendBotMessageServiceImpl;
+
 import static pro.sky.java.TreeCategories.command.CommandName.NO;
 
-
-public class TreeCategoriesBot extends TelegramLongPollingBot {
+@Component
+public class TelegramBot extends TelegramLongPollingBot {
 
     public static String COMMAND_PREFIX = "/";
 
@@ -19,8 +22,8 @@ public class TreeCategoriesBot extends TelegramLongPollingBot {
     private String token;
 
     private final CommandContainer commandContainer;
-
-    public TreeCategoriesBot() {
+@Autowired
+    public TelegramBot() {
         this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
     }
 
@@ -30,8 +33,6 @@ public class TreeCategoriesBot extends TelegramLongPollingBot {
             String message = update.getMessage().getText().trim();
             if (message.startsWith(COMMAND_PREFIX)) {
                 String commandIdentifier = message.split(" ")[0].toLowerCase();
-                String param1 =  message.split(" ")[1];
-                String param2 =  message.split(" ")[2];
 
                 commandContainer.retrieveCommand(commandIdentifier).execute(update);
             } else {

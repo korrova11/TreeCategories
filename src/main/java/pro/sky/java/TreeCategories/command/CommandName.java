@@ -1,11 +1,6 @@
 package pro.sky.java.TreeCategories.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
 public enum CommandName {
     START("/start"),
     VIEW_TREE("/viewTree"),
@@ -16,4 +11,12 @@ public enum CommandName {
     NO("");
 
     private final String commandName;
+
+    CommandName(String commandName) {
+        this.commandName = commandName;
+    }
+
+    public String getCommandName() {
+        return commandName;
+    }
 }

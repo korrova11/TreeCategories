@@ -2,7 +2,7 @@ package pro.sky.java.TreeCategories.service;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import pro.sky.java.TreeCategories.TreeCategoriesBot;
+import pro.sky.java.TreeCategories.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SendBotMessageServiceImpl implements SendBotMessageService {
 
-    private final TreeCategoriesBot bot;
+    private final TelegramBot bot;
 
     @Autowired
-    public SendBotMessageServiceImpl(TreeCategoriesBot bot) {
+    public SendBotMessageServiceImpl(TelegramBot bot) {
         this.bot = bot;
     }
 
