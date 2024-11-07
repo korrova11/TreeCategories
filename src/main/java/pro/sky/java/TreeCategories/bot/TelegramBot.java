@@ -1,4 +1,4 @@
-package pro.sky.java.TreeCategories;
+package pro.sky.java.TreeCategories.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private String token;
 
     private final CommandContainer commandContainer;
-@Autowired
+
     public TelegramBot() {
         this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
     }

@@ -1,5 +1,6 @@
 package pro.sky.java.TreeCategories.command;
 
+import com.fasterxml.jackson.core.SerializableString;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 

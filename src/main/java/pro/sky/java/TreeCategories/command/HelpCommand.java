@@ -12,17 +12,17 @@ public class HelpCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
 
-    public static final String HELP_MESSAGE = String.format("<b>Доступные команды</b>\n"
+    public static final String HELP_MESSAGE =
+         """
+                    ✨<b>Доcтупные команды</b>✨
 
-                    + "<b>Работа с ботом </b>\n"
-                    + "%s - начать работу со мной\n"
-                    + "%s - добавить корневой элемент\n"
-                    + "%s - добавить дочерний элемент к существующему элементу\n"
-                    + "%s - удалить элемент со всеми дочерними элементами\n"
-                    + "%s - отобразить дерево\n"
-                    + "%s - получить список комманд в работе с ботом\n",
-            START.getCommandName(),ADD_ELEMENT.getCommandName(),ADD_CHILD.getCommandName(),
-            REMOVE_ELEMENT.getCommandName(),VIEW_TREE.getCommandName(),HELP.getCommandName());
+                    /start - начать работу со мной
+                    /addElement  <em>название_элемента</em> - добавить корневой элемент
+                    /addElement  <em>родительский_элемент дочерний_элемент</em> - добавить дочерний элемент к существующему элементу
+                    /removeElement  <em>название_ элемента</em> - удалить элемент со всеми дочерними элементами
+                    /viewTree - отобразить дерево
+                    /help - получить список комманд в работе с ботом
+                    """;
 
     public HelpCommand(SendBotMessageService sendBotMessageService) {
         this.sendBotMessageService = sendBotMessageService;
@@ -30,6 +30,6 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), HELP_MESSAGE);
+        sendBotMessageService.sendMessage(update.getMessage().getChatId(), HELP_MESSAGE);
     }
 }
