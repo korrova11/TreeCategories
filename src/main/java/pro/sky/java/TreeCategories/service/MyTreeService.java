@@ -1,16 +1,17 @@
 package pro.sky.java.TreeCategories.service;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Service;
+import pro.sky.java.TreeCategories.command.Command;
 import pro.sky.java.TreeCategories.model.MyTree;
 import pro.sky.java.TreeCategories.repository.MyTreeRepository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class MyTreeService {
     private final MyTreeRepository repository;
+    private final String ADD = "категория добавлена";
+    private final String ADD_IS_PRESENT = "такая категория уже есть!";
 
     public MyTreeService(MyTreeRepository repository) {
         this.repository = repository;
@@ -21,17 +22,22 @@ public class MyTreeService {
      *
      * @param chat
      * @param name
-     * @param Level
      * @return оповещение о выполненном действии
      */
-    public String addCategory(Long chat, String name, int Level) {
+    public String addCategory(Long chat, String name) {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, name);
+        if (myTreeOptional.isPresent()) return ADD_IS_PRESENT;
+        Optional<MyTree> myTreeOptional1 = repository
+                .findMyTreeByChatAndName(chat, "Ваше дерево");
+        if (myTreeOptional1.isEmpty()) {
+            MyTree myTree = repository.save(new MyTree(chat, "Ваше дерево", 1));
+            repository.save(new MyTree(chat, myTree, name, 2));
+            return ADD;
+        }
+        repository.save(new MyTree(chat, myTreeOptional1.get(), name, 2));
+        return ADD;
+    }
 
-        if (myTreeOptional.isEmpty()) {
-            repository.save(new MyTree(chat, name, Level));
-
-            return "Корневой элемент добавлен";
-        } else return "Такой элемент уже есть";
        /* public void add(Node parentNode, Node node) {
             node.setParent(parentNode);
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -39,7 +45,7 @@ public class MyTreeService {
             session.save(node);
             session.getTransaction().commit();
         }*/
-    }
+
 
     /**
      * метод добавляет нового потомка к уже имеющейся категории
@@ -53,38 +59,69 @@ public class MyTreeService {
     public String addChild(Long chat, String parent, String child) {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, parent);
         Optional<MyTree> myTreeOptional1 = repository.findMyTreeByChatAndName(chat, child);
-        if (myTreeOptional1.isPresent()) return "такая категория уже есть!";
+        if (myTreeOptional1.isPresent()) return ADD_IS_PRESENT;
         if (myTreeOptional.isEmpty()) return "не найдена категория родителя";
         MyTree myTreeParent = myTreeOptional.get();
         MyTree myTree = new MyTree(chat, myTreeParent, child, myTreeParent.getLevel() + 1);
         repository.save(myTree);
-        return "категория добавлена";
+        return ADD;
 
     }
 
-/**
- * метод делает  дерево в структурированном виде
+    /**
+     * метод делает  дерево в структурированном виде
+     *
+     * @param myTree
+     * @param str
+     * @return метод возвращает структуру дерева
+     */
 
- *
- * @param myTree
- * @param str1
- * @return метод возвращает структуру дерева
- */
+    public String toStr(MyTree myTree, StringBuilder str) {
 
-    public String toStr(MyTree myTree, StringBuilder str1) {
-
-        str1.append(" ".repeat(myTree.getLevel())).append("-").append(myTree.getName()).append('\n');
+        str.append(" ".repeat(myTree.getLevel())).append("-").append(myTree.getName()).append('\n');
         if (!myTree.getChildren().isEmpty()) {
             myTree.getChildren().stream().forEach(c ->
-                    toStr(c, str1));
+                    toStr(c, str));
         }
 
-        return str1.toString();
+        return str.toString();
 
     }
-    public String toStringTreebyUser(Long chat){
-        MyTree myTree = repository.findMyTreeByChatAndName(chat,"Ваше дерево").get();
-        return toStr(myTree,new StringBuilder());
+
+    /**
+     * метод находит дерево по владельцу и вызывает метод  toStr
+     * @param chat
+     * @return возвращает дерево в структурированном виде
+     */
+
+    public String toStringMyTreeByUser(Long chat) {
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, "Ваше дерево");
+        if (myTreeOptional.isPresent())
+            return toStr(myTreeOptional.get(), new StringBuilder());
+        else return "У Вас еще нет дерева категорий!";
     }
+
+    /**
+     * рекурсивный метод удаления категории, начиная с коллекции children
+     * @param myTree
+     */
+    public void removeChildren(MyTree myTree){
+        if (myTree.getChildren().isEmpty()) repository.delete(myTree);
+        else myTree.getChildren().stream().forEach(m-> removeChildren(m));
+    }
+
+    /**
+     * метод удаляет категорию со всеми дочерними категориями
+     * @param chat
+     * @param name
+     * @return оповещение о результате выполнения команды
+     */
+    public String removeMyTreeCategory(Long chat, String name){
+       Optional<MyTree>  myTreeOptional = repository.findMyTreeByChatAndName(chat,name);
+       if (myTreeOptional.isEmpty()) return "категория не найдена";
+       removeChildren(myTreeOptional.get());
+       return "категория удалена";
+    }
+
 }
 

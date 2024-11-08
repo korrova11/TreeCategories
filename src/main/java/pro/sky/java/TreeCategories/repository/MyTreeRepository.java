@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MyTreeRepository  extends JpaRepository<MyTree, Long> {
-    Optional<MyTree> findMyTreeByUser1AndParent(String user,String parent);
-    List<MyTree> findMyTreeByUser1AndLevel(String user,int level);
+
     Optional<MyTree> findMyTreeByChatAndName(Long chat, String name);
     }
 
