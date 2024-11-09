@@ -1,5 +1,6 @@
 package pro.sky.java.TreeCategories.bot;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,11 +22,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String token;
     private final CommandContainer commandContainer;
+@Autowired
+    public TelegramBot(MyTreeService myTreeService) {
 
-    public TelegramBot() {
-
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
-    }
+       // this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+    this.commandContainer =
+            new CommandContainer(new SendBotMessageServiceImpl(this),
+                    myTreeService);
+}
+    
 
     @Override
     public void onUpdateReceived(Update update) {

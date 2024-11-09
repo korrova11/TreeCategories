@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class MyTreeService implements MyTreeServiceApi{
+public class MyTreeService implements MyTreeServiceApi {
     private final MyTreeRepository repository;
     private final String ADD = "категория добавлена";
     private final String ADD_IS_PRESENT = "такая категория уже есть!";
@@ -81,7 +81,7 @@ public class MyTreeService implements MyTreeServiceApi{
 
     public String toStr(MyTree myTree, StringBuilder str) {
 
-        str.append(" ".repeat(myTree.getLevel())).append("-").append(myTree.getName()).append('\n');
+        str.append("  ".repeat(myTree.getLevel())).append("-").append(myTree.getName()).append('\n');
         if (!myTree.getChildren().isEmpty()) {
             myTree.getChildren().stream().forEach(c ->
                     toStr(c, str));
@@ -93,6 +93,7 @@ public class MyTreeService implements MyTreeServiceApi{
 
     /**
      * метод находит дерево по владельцу и вызывает метод  toStr
+     *
      * @param chat
      * @return возвращает дерево в структурированном виде
      */
@@ -105,25 +106,18 @@ public class MyTreeService implements MyTreeServiceApi{
     }
 
     /**
-     * рекурсивный метод удаления категории, начиная с коллекции children
-     * @param myTree
-     */
-    public void removeChildren(MyTree myTree){
-        if (myTree.getChildren().isEmpty()) repository.delete(myTree);
-        else myTree.getChildren().stream().forEach(m-> removeChildren(m));
-    }
-
-    /**
      * метод удаляет категорию со всеми дочерними категориями
+     *
      * @param chat
      * @param name
      * @return оповещение о результате выполнения команды
      */
-    public String removeMyTreeCategory(Long chat, String name){
-       Optional<MyTree>  myTreeOptional = repository.findMyTreeByChatAndName(chat,name);
-       if (myTreeOptional.isEmpty()) return "категория не найдена";
-       removeChildren(myTreeOptional.get());
-       return "категория удалена";
+    public String removeMyTreeCategory(Long chat, String name) {
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, name);
+        if (myTreeOptional.isEmpty()) return "категория не найдена";
+
+        repository.delete(myTreeOptional.get());
+        return "категория удалена";
     }
 
 }

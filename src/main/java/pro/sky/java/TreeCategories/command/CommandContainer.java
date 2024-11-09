@@ -16,15 +16,15 @@ public class CommandContainer {
     private final Map<String, Command> commandMap;
     private final Command unknownCommand;
 
-    public CommandContainer(SendBotMessageService sendBotMessageService) {
+    public CommandContainer(SendBotMessageService sendBotMessageService, MyTreeService myTreeService) {
 
         commandMap = new HashMap<>();
         commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
         commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
         //commandMap.put(ADDCHILD.getCommandName(), new AddChildCommand(sendBotMessageService));
-        commandMap.put(ADDELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService));
-        commandMap.put(REMOVEELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService));
-        commandMap.put(VIEWTREE.getCommandName(), new ViewTreeCommand(sendBotMessageService));
+        commandMap.put(ADDELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService, myTreeService));
+        commandMap.put(REMOVEELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService, myTreeService));
+        commandMap.put(VIEWTREE.getCommandName(), new ViewTreeCommand(sendBotMessageService, myTreeService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
 
 

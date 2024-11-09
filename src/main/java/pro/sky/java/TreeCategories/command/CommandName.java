@@ -3,11 +3,11 @@ package pro.sky.java.TreeCategories.command;
 
 public enum CommandName {
     START("/start"),
-    VIEWTREE("/viewTree"),
+    VIEWTREE("/viewtree"),
     HELP("/help"),
     ADDELEMENT("/addelement"),
     //ADDCHILD("/addElement"),
-    REMOVEELEMENT("/remove"),
+    REMOVEELEMENT("/removeelement"),
     NO("nocommand");
 
     private final String commandName;
