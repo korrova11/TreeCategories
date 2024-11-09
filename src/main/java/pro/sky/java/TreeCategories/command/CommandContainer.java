@@ -21,10 +21,10 @@ public class CommandContainer {
         commandMap = new HashMap<>();
         commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
         commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
-        commandMap.put(ADD_CHILD.getCommandName(), new AddChildCommand(sendBotMessageService));
-        commandMap.put(ADD_ELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService));
-        commandMap.put(REMOVE_ELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService));
-        commandMap.put(VIEW_TREE.getCommandName(), new ViewTreeCommand(sendBotMessageService));
+        //commandMap.put(ADDCHILD.getCommandName(), new AddChildCommand(sendBotMessageService));
+        commandMap.put(ADDELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService));
+        commandMap.put(REMOVEELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService));
+        commandMap.put(VIEWTREE.getCommandName(), new ViewTreeCommand(sendBotMessageService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
 
 
