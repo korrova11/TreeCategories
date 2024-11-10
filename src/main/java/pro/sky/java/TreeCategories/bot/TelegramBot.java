@@ -22,15 +22,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String token;
     private final CommandContainer commandContainer;
-@Autowired
+
+    @Autowired
     public TelegramBot(MyTreeService myTreeService) {
 
-       // this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
-    this.commandContainer =
-            new CommandContainer(new SendBotMessageServiceImpl(this),
-                    myTreeService);
-}
-    
+        this.commandContainer =
+                new CommandContainer(new SendBotMessageServiceImpl(this),
+                        myTreeService);
+    }
+
 
     @Override
     public void onUpdateReceived(Update update) {

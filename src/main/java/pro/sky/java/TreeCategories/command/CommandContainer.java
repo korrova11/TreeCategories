@@ -21,10 +21,9 @@ public class CommandContainer {
         commandMap = new HashMap<>();
         commandMap.put(START.getCommandName(), new StartCommand(sendBotMessageService));
         commandMap.put(HELP.getCommandName(), new HelpCommand(sendBotMessageService));
-        //commandMap.put(ADDCHILD.getCommandName(), new AddChildCommand(sendBotMessageService));
-        commandMap.put(ADDELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService, myTreeService));
-        commandMap.put(REMOVEELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService, myTreeService));
-        commandMap.put(VIEWTREE.getCommandName(), new ViewTreeCommand(sendBotMessageService, myTreeService));
+        commandMap.put(ADD_ELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService, myTreeService));
+        commandMap.put(REMOVE_ELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService, myTreeService));
+        commandMap.put(VIEW_TREE.getCommandName(), new ViewTreeCommand(sendBotMessageService, myTreeService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
 
 
@@ -32,7 +31,7 @@ public class CommandContainer {
     }
 
     public Command retrieveCommand(String commandIdentifier) {
-        return commandMap.getOrDefault(commandIdentifier,unknownCommand);
+        return commandMap.getOrDefault(commandIdentifier, unknownCommand);
     }
 
 }

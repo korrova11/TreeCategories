@@ -3,7 +3,9 @@ package pro.sky.java.TreeCategories.command;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import pro.sky.java.TreeCategories.service.MyTreeService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
-
+/**
+ * ViewTree {@link Command}.
+ */
 public class ViewTreeCommand implements Command{
     private final SendBotMessageService sendBotMessageService;
     private final MyTreeService myTreeService;
@@ -15,7 +17,8 @@ public class ViewTreeCommand implements Command{
 
     @Override
     public void execute(Update update) {
-        String answer = myTreeService.toStringMyTreeByUser(update.getMessage().getChatId());
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), answer);
+        Long chat = update.getMessage().getChatId();
+        String answer = myTreeService.toStringMyTreeByUser(chat);
+        sendBotMessageService.sendMessage(chat, answer);
     }
 }

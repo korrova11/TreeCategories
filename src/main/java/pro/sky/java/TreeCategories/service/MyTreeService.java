@@ -41,14 +41,6 @@ public class MyTreeService implements MyTreeServiceApi {
         return ADD;
     }
 
-       /* public void add(Node parentNode, Node node) {
-            node.setParent(parentNode);
-            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            session.save(node);
-            session.getTransaction().commit();
-        }*/
-
 
     /**
      * метод добавляет нового потомка к уже имеющейся категории

@@ -18,18 +18,7 @@ import java.util.List;
 @Data
 
 public class MyTree implements Serializable {
-    /*@Id
-    @GeneratedValue
-    private Long id;
-    @NotNull
-    private String userChat;
-    @NotNull
-    private String name;
 
-    private int level;
-    @OneToMany(mappedBy = "name", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<MyTree> children = new ArrayList<>();*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -45,14 +34,14 @@ public class MyTree implements Serializable {
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<MyTree> children = new ArrayList<>();
-    private int level;
+    private int level;  // нужен для вывода наглядной структуры дерева
 
     public MyTree(Long chat, MyTree parent, String name, int level) {
         this.chat = chat;
         this.parent = parent;
         this.name = name;
         this.level = level;
-        // this.children = new ArrayList<>();
+
     }
 
     public MyTree(Long chat, String name, int level) {
