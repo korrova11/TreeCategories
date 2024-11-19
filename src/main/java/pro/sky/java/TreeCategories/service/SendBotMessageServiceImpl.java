@@ -1,15 +1,33 @@
 package pro.sky.java.TreeCategories.service;
 
+import jakarta.transaction.Transactional;
+import org.apache.poi.util.TempFile;
+import org.springframework.beans.factory.annotation.Value;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Document;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pro.sky.java.TreeCategories.bot.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
+import static org.springframework.util.ResourceUtils.getFile;
+
+
 /**
  * Implementation of {@link SendBotMessageService} interface.
  */
 @Service
+@Transactional
 public class SendBotMessageServiceImpl implements SendBotMessageService {
 
     private final TelegramBot bot;
@@ -29,9 +47,41 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
         try {
             bot.execute(sendMessage);
         } catch (TelegramApiException e) {
-            //todo add logging to the project.
+
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public File upload(Document doc)  {
+
+        String uploadedFileId = doc.getFileId();
+
+        try {
+            org.telegram.telegrambots.meta.api.objects.File file = bot.execute(new GetFile(uploadedFileId));
+            return downloadFile(new URL("https://api.telegram.org/file/bot" + bot.getBotToken() + "/" + file.getFilePath()),
+                    File.createTempFile("tempTree", ".xlsx"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private File downloadFile(URL fileURL, File tempFile) throws IOException {
+        try (ReadableByteChannel rbc = Channels.newChannel(fileURL.openStream());
+             FileOutputStream fos = new FileOutputStream(tempFile)) {
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            return tempFile;
+        }
+    }
+
+
+    @Override
+    public String getFilePath(Document doc) throws TelegramApiException {
+        String uploadedFileId = doc.getFileId();
+        org.telegram.telegrambots.meta.api.objects.File file = bot.execute(new GetFile(uploadedFileId));
+        return file.getFilePath();
     }
 }
 

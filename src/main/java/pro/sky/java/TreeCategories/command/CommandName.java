@@ -7,7 +7,9 @@ public enum CommandName {
     HELP("/help"),
     ADD_ELEMENT("/addelement"),
     REMOVE_ELEMENT("/removeelement"),
-    NO("nocommand");
+    NO("nocommand"),
+    UPLOAD("/upload");
+
 
     private final String commandName;
 

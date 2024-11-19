@@ -1,11 +1,18 @@
 package pro.sky.java.TreeCategories.service;
 
 import jakarta.transaction.Transactional;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import pro.sky.java.TreeCategories.command.Command;
+
+
 import pro.sky.java.TreeCategories.model.MyTree;
 import pro.sky.java.TreeCategories.repository.MyTreeRepository;
 
+import java.io.*;
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
@@ -55,7 +62,7 @@ public class MyTreeService implements MyTreeServiceApi {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, parent);
         Optional<MyTree> myTreeOptional1 = repository.findMyTreeByChatAndName(chat, child);
         if (myTreeOptional1.isPresent()) return ADD_IS_PRESENT;
-        if (myTreeOptional.isEmpty()) return "не найдена категория родителя";
+        if (myTreeOptional.isEmpty()) return "не найдена категория родителя " + parent;
         MyTree myTreeParent = myTreeOptional.get();
         MyTree myTree = new MyTree(chat, myTreeParent, child, myTreeParent.getLevel() + 1);
         repository.save(myTree);
@@ -106,11 +113,49 @@ public class MyTreeService implements MyTreeServiceApi {
      */
     public String removeMyTreeCategory(Long chat, String name) {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, name);
-        if (myTreeOptional.isEmpty()) return "категория не найдена";
+        if (myTreeOptional.isEmpty()) return "категория " + name + " не найдена!";
 
         repository.delete(myTreeOptional.get());
         return "категория удалена";
     }
 
+    /**
+     * запись данных в БД из exel таблицы с ячейками :
+     * parent, name
+     *
+     * @param file
+     * @param chat
+     * @throws IOException
+     */
+    public String uploadExel(File file, Long chat) {
+
+        XSSFWorkbook myExcelBook = null;
+        try {
+            myExcelBook = new XSSFWorkbook(new FileInputStream(String.valueOf(file)));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        XSSFSheet sheet = myExcelBook.getSheetAt(0);
+        String str = "";
+        Iterator rowIter = sheet.rowIterator();
+        while (rowIter.hasNext()) {
+            XSSFRow row = (XSSFRow) rowIter.next();
+            String cell0 = row.getCell(0).getRichStringCellValue().getString();
+            String cell1 = row.getCell(1).getRichStringCellValue().getString();
+            if (cell0.equals("_")) {
+                str =  addCategory(chat, cell1);
+
+            } else  str =  addChild(chat, cell0, cell1);
+
+        }
+        return str;
+
+    }
+
+
 }
+
+
+
 
