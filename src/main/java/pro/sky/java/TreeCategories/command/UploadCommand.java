@@ -34,8 +34,8 @@ public class UploadCommand implements Command {
         if (document.getMimeType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
 
             try {
-              sendBotMessageService.sendMessage(chat,  myTreeService.uploadExel(sendBotMessageService.upload(document),chat));
-              //  sendBotMessageService.sendMessage(chat,sendBotMessageService.getFilePath(document));
+                sendBotMessageService.sendMessage(chat, myTreeService.uploadExel(sendBotMessageService.upload(document), chat));
+                //  sendBotMessageService.sendMessage(chat,sendBotMessageService.getFilePath(document));
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
