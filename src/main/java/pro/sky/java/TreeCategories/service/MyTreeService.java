@@ -2,6 +2,8 @@ package pro.sky.java.TreeCategories.service;
 
 import jakarta.transaction.Transactional;
 
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -150,6 +152,24 @@ public class MyTreeService implements MyTreeServiceApi {
 
         }
         return str;
+
+    }
+    public void downLoad(Long chat) throws IOException {
+        XSSFWorkbook book = new XSSFWorkbook();
+        FileOutputStream fileOut = new FileOutputStream("workbook.xlsx");
+
+        XSSFSheet sheet1 = book.createSheet("Дерево категорий");
+        sheet1.autoSizeColumn(0);
+        sheet1.autoSizeColumn(1);
+        XSSFRow row = sheet1.createRow((short)0);
+        row.setHeightInPoints(80.0f);
+
+        XSSFCell cell = row.createCell(0);
+        cell.setCellType(CellType.STRING);
+        cell.setCellValue("Коля");
+
+        book.write(fileOut);
+        fileOut.close();
 
     }
 
