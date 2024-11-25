@@ -24,6 +24,7 @@ public class CommandContainer {
         commandMap.put(ADD_ELEMENT.getCommandName(), new AddElementCommand(sendBotMessageService, myTreeService));
         commandMap.put(REMOVE_ELEMENT.getCommandName(), new RemoveElementCommand(sendBotMessageService, myTreeService));
         commandMap.put(VIEW_TREE.getCommandName(), new ViewTreeCommand(sendBotMessageService, myTreeService));
+        commandMap.put(DOWN_LOAD.getCommandName(), new DownLoadCommand(sendBotMessageService, myTreeService));
         commandMap.put(UPLOAD.getCommandName(), new UploadCommand(sendBotMessageService, myTreeService));
         commandMap.put(NO.getCommandName(), new NoCommand(sendBotMessageService));
 

@@ -23,6 +23,7 @@ public class MyTreeService implements MyTreeServiceApi {
     private final MyTreeRepository repository;
     private final String ADD = "категория добавлена";
     private final String ADD_IS_PRESENT = "такая категория уже есть!";
+    private static int number =-1;
 
     public MyTreeService(MyTreeRepository repository) {
         this.repository = repository;
@@ -92,6 +93,21 @@ public class MyTreeService implements MyTreeServiceApi {
 
     }
 
+    private void builderTree(XSSFSheet sheet, MyTree myTree, int number) {
+        number=number+1;
+        XSSFRow row = sheet.createRow(number);
+        int level = myTree.getLevel();
+        for (int j = 0; j < level; j++) {
+            row.createCell(j).setCellValue("_");
+        }
+        row.createCell(level).setCellValue(myTree.getName());
+        if (!myTree.getChildren().isEmpty()) {
+            int finalNumber = number;
+            myTree.getChildren().stream().forEach(c ->
+                    builderTree(sheet, c, finalNumber));
+        }
+    }
+
     /**
      * метод находит дерево по владельцу и вызывает метод  toStr
      *
@@ -146,34 +162,38 @@ public class MyTreeService implements MyTreeServiceApi {
             String cell0 = row.getCell(0).getRichStringCellValue().getString();
             String cell1 = row.getCell(1).getRichStringCellValue().getString();
             if (cell0.equals("_")) {
-                str =  addCategory(chat, cell1);
+                str = addCategory(chat, cell1);
 
-            } else  str =  addChild(chat, cell0, cell1);
+            } else str = addChild(chat, cell0, cell1);
 
         }
         return str;
 
     }
-    public void downLoad(Long chat) throws IOException {
+
+    /**
+     * Метод создает excel документ дерева категорий
+     *
+     * @param chat
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public File createExcel(Long chat, File file) throws IOException {
         XSSFWorkbook book = new XSSFWorkbook();
-        FileOutputStream fileOut = new FileOutputStream("workbook.xlsx");
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, "Ваше дерево");
+        if (myTreeOptional.isPresent()) {
+            XSSFSheet sheet = book.createSheet("Дерево категорий");
+            MyTree myTree = myTreeOptional.get();
+            builderTree(sheet, myTree, 0);
 
-        XSSFSheet sheet1 = book.createSheet("Дерево категорий");
-        sheet1.autoSizeColumn(0);
-        sheet1.autoSizeColumn(1);
-        XSSFRow row = sheet1.createRow((short)0);
-        row.setHeightInPoints(80.0f);
+            book.write(new FileOutputStream(file));
 
-        XSSFCell cell = row.createCell(0);
-        cell.setCellType(CellType.STRING);
-        cell.setCellValue("Коля");
+            return file;
+        } else return file;
 
-        book.write(fileOut);
-        fileOut.close();
 
     }
-
-
 }
 
 

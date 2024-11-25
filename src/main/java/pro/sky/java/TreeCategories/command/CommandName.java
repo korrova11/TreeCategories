@@ -8,6 +8,7 @@ public enum CommandName {
     ADD_ELEMENT("/addelement"),
     REMOVE_ELEMENT("/removeelement"),
     NO("nocommand"),
+    DOWN_LOAD("/download"),
     UPLOAD("/upload");
 
 

@@ -1,10 +1,12 @@
 package pro.sky.java.TreeCategories.command;
 
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pro.sky.java.TreeCategories.service.MyTreeService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
+import java.io.File;
 import java.io.IOException;
 
 public class DownLoadCommand  implements Command{
@@ -20,5 +22,7 @@ public class DownLoadCommand  implements Command{
     @Override
     public void execute(Update update) throws IOException, TelegramApiException {
         Long chat = update.getMessage().getChatId();
+        File file = File.createTempFile("treeCategories", ".xlsx");
+       sendBotMessageService.sendDocument(chat,myTreeService.createExcel(chat,file));
     }
 }
