@@ -93,9 +93,10 @@ public class MyTreeService implements MyTreeServiceApi {
 
     }
 
-    private void builderTree(XSSFSheet sheet, MyTree myTree, int number) {
+    private void builderTree(XSSFSheet sheet, MyTree myTree) {
         number=number+1;
-        XSSFRow row = sheet.createRow(number);
+        XSSFRow row =sheet.createRow(sheet.getLastRowNum() + 1);
+        //Row row = sheet.createRow(sheet.getLastRowNum() + 1);
         int level = myTree.getLevel();
         for (int j = 0; j < level; j++) {
             row.createCell(j).setCellValue("_");
@@ -104,7 +105,7 @@ public class MyTreeService implements MyTreeServiceApi {
         if (!myTree.getChildren().isEmpty()) {
             int finalNumber = number;
             myTree.getChildren().stream().forEach(c ->
-                    builderTree(sheet, c, finalNumber));
+                    builderTree(sheet, c));
         }
     }
 
@@ -185,7 +186,7 @@ public class MyTreeService implements MyTreeServiceApi {
         if (myTreeOptional.isPresent()) {
             XSSFSheet sheet = book.createSheet("Дерево категорий");
             MyTree myTree = myTreeOptional.get();
-            builderTree(sheet, myTree, 0);
+            builderTree(sheet, myTree);
 
             book.write(new FileOutputStream(file));
 
