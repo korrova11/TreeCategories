@@ -2,8 +2,6 @@ package pro.sky.java.TreeCategories.service;
 
 import jakarta.transaction.Transactional;
 
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -23,7 +21,8 @@ public class MyTreeService implements MyTreeServiceApi {
     private final MyTreeRepository repository;
     private final String ADD = "категория добавлена";
     private final String ADD_IS_PRESENT = "такая категория уже есть!";
-    private static int number =-1;
+    private final  String TITLE = "Дерево категорий";
+
 
     public MyTreeService(MyTreeRepository repository) {
         this.repository = repository;
@@ -41,9 +40,9 @@ public class MyTreeService implements MyTreeServiceApi {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, name);
         if (myTreeOptional.isPresent()) return ADD_IS_PRESENT;
         Optional<MyTree> myTreeOptional1 = repository
-                .findMyTreeByChatAndName(chat, "Ваше дерево");
+                .findMyTreeByChatAndName(chat, TITLE);
         if (myTreeOptional1.isEmpty()) {
-            MyTree myTree = repository.save(new MyTree(chat, "Ваше дерево", 1));
+            MyTree myTree = repository.save(new MyTree(chat, TITLE, 1));
             repository.save(new MyTree(chat, myTree, name, 2));
             return ADD;
         }
@@ -83,7 +82,8 @@ public class MyTreeService implements MyTreeServiceApi {
 
     public String toStr(MyTree myTree, StringBuilder str) {
 
-        str.append("  ".repeat(myTree.getLevel())).append("-").append(myTree.getName()).append('\n');
+        str.append("  ".repeat(myTree.getLevel())).append("-")
+                .append(myTree.getName()).append('\n');
         if (!myTree.getChildren().isEmpty()) {
             myTree.getChildren().stream().forEach(c ->
                     toStr(c, str));
@@ -93,17 +93,22 @@ public class MyTreeService implements MyTreeServiceApi {
 
     }
 
+    /**
+     * рекурмивный метод,  создает строку в excel таблице
+     * @param sheet
+     * @param myTree
+     */
+
     private void builderTree(XSSFSheet sheet, MyTree myTree) {
-        number=number+1;
-        XSSFRow row =sheet.createRow(sheet.getLastRowNum() + 1);
-        //Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+
+        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
+
         int level = myTree.getLevel();
         for (int j = 0; j < level; j++) {
             row.createCell(j).setCellValue("_");
         }
         row.createCell(level).setCellValue(myTree.getName());
         if (!myTree.getChildren().isEmpty()) {
-            int finalNumber = number;
             myTree.getChildren().stream().forEach(c ->
                     builderTree(sheet, c));
         }
@@ -117,7 +122,7 @@ public class MyTreeService implements MyTreeServiceApi {
      */
 
     public String toStringMyTreeByUser(Long chat) {
-        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, "Ваше дерево");
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, TITLE);
         if (myTreeOptional.isPresent())
             return toStr(myTreeOptional.get(), new StringBuilder());
         else return "У Вас еще нет дерева категорий!";
@@ -182,7 +187,7 @@ public class MyTreeService implements MyTreeServiceApi {
      */
     public File createExcel(Long chat, File file) throws IOException {
         XSSFWorkbook book = new XSSFWorkbook();
-        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, "Ваше дерево");
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, TITLE);
         if (myTreeOptional.isPresent()) {
             XSSFSheet sheet = book.createSheet("Дерево категорий");
             MyTree myTree = myTreeOptional.get();

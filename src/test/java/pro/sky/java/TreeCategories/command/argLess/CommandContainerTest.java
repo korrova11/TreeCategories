@@ -1,4 +1,4 @@
-package pro.sky.java.TreeCategories.command;
+package pro.sky.java.TreeCategories.command.argLess;
 
 
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +29,7 @@ class CommandContainerTest {
 
     @Test
     public void shouldGetAllTheExistingCommands() {
-        //when-then
+
         Arrays.stream(CommandName.values())
                 .forEach(commandName -> {
                     Command command = commandContainer.retrieveCommand(commandName.getCommandName());
@@ -39,13 +39,11 @@ class CommandContainerTest {
 
     @Test
     public void shouldReturnUnknownCommand() {
-        //given
+
         String unknownCommand = "/fgjhdfgdfg";
 
-        //when
         Command command = commandContainer.retrieveCommand(unknownCommand);
 
-        //then
         Assertions.assertEquals(UnknownCommand.class, command.getClass());
     }
 }

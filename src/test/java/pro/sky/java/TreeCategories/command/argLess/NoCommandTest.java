@@ -1,7 +1,6 @@
-package pro.sky.java.TreeCategories.command;
+package pro.sky.java.TreeCategories.command.argLess;
 
 import org.junit.jupiter.api.DisplayName;
-import pro.sky.java.TreeCategories.command.AbstractCommandTest;
 import pro.sky.java.TreeCategories.command.Command;
 import pro.sky.java.TreeCategories.command.NoCommand;
 

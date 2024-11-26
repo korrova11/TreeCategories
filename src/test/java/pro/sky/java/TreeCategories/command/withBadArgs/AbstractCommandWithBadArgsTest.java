@@ -1,22 +1,26 @@
-package pro.sky.java.TreeCategories.command;
+package pro.sky.java.TreeCategories.command.withBadArgs;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.verification.VerificationModeFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pro.sky.java.TreeCategories.bot.TelegramBot;
 import pro.sky.java.TreeCategories.command.Command;
+import pro.sky.java.TreeCategories.repository.MyTreeRepository;
+import pro.sky.java.TreeCategories.service.MyTreeService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 import pro.sky.java.TreeCategories.service.SendBotMessageServiceImpl;
 
+import java.io.IOException;
 
-abstract class AbstractCommandTest {
 
+public abstract class AbstractCommandWithBadArgsTest {
     protected TelegramBot bot = Mockito.mock(TelegramBot.class);
+    protected MyTreeRepository repository = Mockito.mock(MyTreeRepository.class);
     protected SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(bot);
+    protected MyTreeService myTreeService = new MyTreeService(repository);
 
     abstract String getCommandName();
 
@@ -25,14 +29,17 @@ abstract class AbstractCommandTest {
     abstract Command getCommand();
 
     @Test
-    public void shouldProperlyExecuteCommandTest() throws TelegramApiException {
+    public void shouldProperlyExecuteCommandTest() throws TelegramApiException, IOException {
 
         Long chatId = 1234567824356L;
+        String arg1 = "аргумент1";
+        String arg2 = "аргумент2";
 
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.getChatId()).thenReturn(chatId);
-        Mockito.when(message.getText()).thenReturn(getCommandName());
+        Mockito.when(message.getText()).thenReturn(getCommandName() + " " + arg1 + " " + arg2);
+
         update.setMessage(message);
 
         SendMessage sendMessage = new SendMessage();
