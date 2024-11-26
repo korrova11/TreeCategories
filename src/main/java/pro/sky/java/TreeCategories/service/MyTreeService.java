@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class MyTreeService implements MyTreeServiceApi {
+public class MyTreeService {
     private final MyTreeRepository repository;
     private final String ADD = "категория добавлена";
     private final String ADD_IS_PRESENT = "такая категория уже есть!";
@@ -35,7 +35,7 @@ public class MyTreeService implements MyTreeServiceApi {
      * @param name
      * @return оповещение о выполненном действии
      */
-    @Override
+
     public String addCategory(Long chat, String name) {
         Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, name);
         if (myTreeOptional.isPresent()) return ADD_IS_PRESENT;

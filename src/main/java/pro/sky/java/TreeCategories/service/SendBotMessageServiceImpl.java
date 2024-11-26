@@ -1,14 +1,14 @@
 package pro.sky.java.TreeCategories.service;
 
 import jakarta.transaction.Transactional;
-import org.apache.poi.util.TempFile;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.io.IOException;
 import pro.sky.java.TreeCategories.bot.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
-import static org.springframework.util.ResourceUtils.getFile;
 
 
 /**
@@ -64,6 +59,7 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
 
             e.printStackTrace();
         }
+
 
     }
 
