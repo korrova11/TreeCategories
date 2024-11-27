@@ -200,7 +200,7 @@ public class MyTreeService {
 
     }
     public boolean isMyTree(Long chat){
-        Optional<MyTree> myTreeOptional = repository.findMyTreeByChat(chat);
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat,TITLE);
         return myTreeOptional.isPresent();
     }
 }
