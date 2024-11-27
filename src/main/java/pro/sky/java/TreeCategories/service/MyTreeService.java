@@ -198,7 +198,10 @@ public class MyTreeService {
             return file;
         } else return file;
 
-
+    }
+    public boolean isMyTree(Long chat){
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChat(chat);
+        return myTreeOptional.isPresent();
     }
 }
 

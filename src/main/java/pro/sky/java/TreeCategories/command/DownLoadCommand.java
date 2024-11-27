@@ -22,8 +22,11 @@ public class DownLoadCommand  implements Command{
     @Override
     public void execute(Update update) throws IOException, TelegramApiException {
         Long chat = update.getMessage().getChatId();
+        if (!myTreeService.isMyTree(chat)){
+            sendBotMessageService.sendMessage(chat,"У вас еще нет дерева категорий!");}
+        else{
         File file = File.createTempFile("treeCategories", ".xlsx");
        sendBotMessageService.sendDocument(chat,
-               myTreeService.createExcel(chat,file));
+               myTreeService.createExcel(chat,file));}
     }
 }

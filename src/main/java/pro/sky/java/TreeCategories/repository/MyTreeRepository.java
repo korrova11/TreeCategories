@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface MyTreeRepository  extends JpaRepository<MyTree, Long> {
 
     Optional<MyTree> findMyTreeByChatAndName(Long chat, String name);
+    Optional<MyTree> findMyTreeByChat(Long chat);
     }
 
