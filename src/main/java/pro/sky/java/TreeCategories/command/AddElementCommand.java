@@ -35,6 +35,5 @@ public class AddElementCommand implements Command {
                 "некорректная команда");
     }
 
-
 }
 

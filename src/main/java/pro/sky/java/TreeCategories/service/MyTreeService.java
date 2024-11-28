@@ -21,7 +21,7 @@ public class MyTreeService {
     private final MyTreeRepository repository;
     private final String ADD = "категория добавлена";
     private final String ADD_IS_PRESENT = "такая категория уже есть!";
-    private final  String TITLE = "Дерево категорий";
+    private final String TITLE = "Дерево категорий";
 
 
     public MyTreeService(MyTreeRepository repository) {
@@ -95,6 +95,7 @@ public class MyTreeService {
 
     /**
      * рекурмивный метод,  создает строку в excel таблице
+     *
      * @param sheet
      * @param myTree
      */
@@ -199,8 +200,9 @@ public class MyTreeService {
         } else return file;
 
     }
-    public boolean isMyTree(Long chat){
-        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat,TITLE);
+
+    public boolean isMyTree(Long chat) {
+        Optional<MyTree> myTreeOptional = repository.findMyTreeByChatAndName(chat, TITLE);
         return myTreeOptional.isPresent();
     }
 }

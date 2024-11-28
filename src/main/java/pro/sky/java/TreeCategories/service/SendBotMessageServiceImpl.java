@@ -90,11 +90,5 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
     }
 
 
-    @Override
-    public String getFilePath(Document doc) throws TelegramApiException {
-        String uploadedFileId = doc.getFileId();
-        org.telegram.telegrambots.meta.api.objects.File file = bot.execute(new GetFile(uploadedFileId));
-        return file.getFilePath();
-    }
 }
 

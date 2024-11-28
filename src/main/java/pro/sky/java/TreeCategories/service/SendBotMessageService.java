@@ -20,7 +20,6 @@ public interface SendBotMessageService {
     void sendMessage(Long chatId,String message);
     public void sendDocument(Long chatId,File file);
     public File upload(Document doc) throws TelegramApiException;
-    public String getFilePath(Document doc) throws TelegramApiException;
 
 
 }
