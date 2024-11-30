@@ -20,6 +20,6 @@ public class ViewTreeCommandTreeLessTest extends AbstractCommandTest{
 
     @Override
     Command getCommand() {
-        return new ViewTreeCommand(sendBotMessageService,myTreeService);
+        return new ViewTreeCommand(sendBotMessageService,categoryService);
     }
 }

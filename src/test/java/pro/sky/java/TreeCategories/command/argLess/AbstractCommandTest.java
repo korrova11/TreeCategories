@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pro.sky.java.TreeCategories.bot.TelegramBot;
 import pro.sky.java.TreeCategories.command.Command;
-import pro.sky.java.TreeCategories.repository.MyTreeRepository;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.repository.CategoryRepository;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 import pro.sky.java.TreeCategories.service.SendBotMessageServiceImpl;
 
@@ -20,9 +20,9 @@ import java.io.IOException;
 abstract class AbstractCommandTest {
 
     protected TelegramBot bot = Mockito.mock(TelegramBot.class);
-    protected MyTreeRepository repository = Mockito.mock(MyTreeRepository.class);
+    protected CategoryRepository repository = Mockito.mock(CategoryRepository.class);
     protected SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(bot);
-    protected  MyTreeService myTreeService = new MyTreeService(repository);
+    protected  CategoryService categoryService = new CategoryService(repository);
 
     abstract String getCommandName();
 

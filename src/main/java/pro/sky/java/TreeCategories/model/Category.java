@@ -2,7 +2,9 @@ package pro.sky.java.TreeCategories.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -17,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 
-public class MyTree implements Serializable {
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +28,17 @@ public class MyTree implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "FK_PARENT_ID"))
-    private MyTree parent;
+    private Category parent;
 
     @NotNull
     private String name;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<MyTree> children = new ArrayList<>();
+    private List<Category> children = new ArrayList<>();
     private int level;  // нужен для вывода наглядной структуры дерева
 
-    public MyTree(Long chat, MyTree parent, String name, int level) {
+    public Category(Long chat, Category parent, String name, int level) {
         this.chat = chat;
         this.parent = parent;
         this.name = name;
@@ -44,7 +46,7 @@ public class MyTree implements Serializable {
 
     }
 
-    public MyTree(Long chat, String name, int level) {
+    public Category(Long chat, String name, int level) {
         this.chat = chat;
         this.name = name;
         this.level = level;
@@ -53,3 +55,4 @@ public class MyTree implements Serializable {
 
 
 }
+

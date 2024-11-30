@@ -1,20 +1,22 @@
 package pro.sky.java.TreeCategories.command;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
 /**
  * AddElement {@link Command}.
  */
+@Component
 public class AddElementCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
 
-    private final MyTreeService myTreeService;
+    private final CategoryService categoryService;
 
-    public AddElementCommand(SendBotMessageService sendBotMessageService, MyTreeService myTreeService) {
+    public AddElementCommand(SendBotMessageService sendBotMessageService, CategoryService categoryService) {
         this.sendBotMessageService = sendBotMessageService;
-        this.myTreeService = myTreeService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -23,12 +25,12 @@ public class AddElementCommand implements Command {
         Long chat = update.getMessage().getChatId();
         String[] command = message.split(" ");
         if (command.length == 2) {
-            String answer = myTreeService.addCategory(chat, command
+            String answer = categoryService.addCategory(chat, command
                     [1]);
             sendBotMessageService.sendMessage(chat, answer);
 
         } else if (command.length == 3) {
-            String answer = myTreeService.addChild(chat, command
+            String answer = categoryService.addChild(chat, command
                     [1], command[2]);
             sendBotMessageService.sendMessage(chat, answer);
         } else sendBotMessageService.sendMessage(chat,

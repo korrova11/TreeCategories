@@ -18,7 +18,7 @@ public class AddElementCommandWithBadArgsTest extends AbstractCommandWithBadArgs
 
     @Override
     Command getCommand() {
-        return new AddElementCommand(sendBotMessageService, myTreeService);
+        return new AddElementCommand(sendBotMessageService, categoryService);
     }
 
 }

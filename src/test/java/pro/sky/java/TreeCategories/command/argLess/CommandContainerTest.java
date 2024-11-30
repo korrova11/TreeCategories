@@ -10,7 +10,7 @@ import pro.sky.java.TreeCategories.command.Command;
 import pro.sky.java.TreeCategories.command.CommandContainer;
 import pro.sky.java.TreeCategories.command.CommandName;
 import pro.sky.java.TreeCategories.command.UnknownCommand;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
 import java.util.Arrays;
@@ -23,8 +23,8 @@ class CommandContainerTest {
     @BeforeEach
     public void init() {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
-        MyTreeService myTreeService = Mockito.mock(MyTreeService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, myTreeService);
+        CategoryService categoryService = Mockito.mock(CategoryService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, categoryService);
     }
 
     @Test

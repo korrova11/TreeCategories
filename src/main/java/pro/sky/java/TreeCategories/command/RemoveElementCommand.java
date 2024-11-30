@@ -1,19 +1,21 @@
 package pro.sky.java.TreeCategories.command;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
 /**
  * RemoveElement {@link Command}.
  */
+@Component
 public class RemoveElementCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
-    private final MyTreeService myTreeService;
+    private final CategoryService categoryService;
 
-    public RemoveElementCommand(SendBotMessageService sendBotMessageService, MyTreeService myTreeService) {
+    public RemoveElementCommand(SendBotMessageService sendBotMessageService, CategoryService categoryService) {
         this.sendBotMessageService = sendBotMessageService;
-        this.myTreeService = myTreeService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class RemoveElementCommand implements Command {
         String answer;
         if (command.length == 1) {answer = "Не введена категория!";}
         else {
-        answer = myTreeService.removeMyTreeCategory(chat, command[1]);}
+        answer = categoryService.removeCategory(chat, command[1]);}
         sendBotMessageService.sendMessage(chat, answer);
     }
 }

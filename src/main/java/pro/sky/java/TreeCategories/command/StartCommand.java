@@ -1,12 +1,18 @@
 package pro.sky.java.TreeCategories.command;
 
+
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
 /**
  * Start {@link Command}.
  */
+@Component
+@Scope("prototype")
 public class StartCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;

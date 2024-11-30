@@ -8,9 +8,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pro.sky.java.TreeCategories.bot.TelegramBot;
 import pro.sky.java.TreeCategories.command.Command;
-import pro.sky.java.TreeCategories.model.MyTree;
-import pro.sky.java.TreeCategories.repository.MyTreeRepository;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.model.Category;
+import pro.sky.java.TreeCategories.repository.CategoryRepository;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 import pro.sky.java.TreeCategories.service.SendBotMessageServiceImpl;
 
@@ -21,9 +21,9 @@ import static org.mockito.ArgumentMatchers.any;
 
 public abstract class AbstractCommandWithArgsTest {
     protected TelegramBot bot = Mockito.mock(TelegramBot.class);
-    protected MyTreeRepository repository = Mockito.mock(MyTreeRepository.class);
+    protected CategoryRepository repository = Mockito.mock(CategoryRepository.class);
     protected SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(bot);
-    protected MyTreeService myTreeService = new MyTreeService(repository);
+    protected CategoryService categoryService = new CategoryService(repository);
 
     abstract String getCommandName();
 
@@ -36,14 +36,14 @@ public abstract class AbstractCommandWithArgsTest {
 
         Long chatId = 1234567824356L;
         String arg1 = "аргумент1";
-        MyTree myTree = new MyTree(chatId,arg1,1);
+        Category category = new Category(chatId,arg1,1);
         Update update = new Update();
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.getChatId()).thenReturn(chatId);
         Mockito.when(message.getText()).thenReturn(getCommandName()+" " +arg1);
-        Mockito.when(repository.save(any(MyTree.class))).thenReturn(myTree);
-        Mockito.when( repository.findMyTreeByChatAndName(chatId, arg1))
-                .thenReturn(Optional.of(myTree));
+        Mockito.when(repository.save(any(Category.class))).thenReturn(category);
+        Mockito.when( repository.findCategoryByChatAndName(chatId, arg1))
+                .thenReturn(Optional.of(category));
         update.setMessage(message);
 
         SendMessage sendMessage = new SendMessage();

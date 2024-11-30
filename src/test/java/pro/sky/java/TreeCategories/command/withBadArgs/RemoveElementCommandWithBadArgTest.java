@@ -18,6 +18,6 @@ public class RemoveElementCommandWithBadArgTest extends AbstractCommandWithBadAr
 
     @Override
     Command getCommand() {
-        return new RemoveElementCommand(sendBotMessageService, myTreeService);
+        return new RemoveElementCommand(sendBotMessageService, categoryService);
     }
 }

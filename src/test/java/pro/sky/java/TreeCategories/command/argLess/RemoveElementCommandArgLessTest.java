@@ -20,6 +20,6 @@ public class RemoveElementCommandArgLessTest extends AbstractCommandTest{
 
     @Override
     Command getCommand() {
-        return new RemoveElementCommand(sendBotMessageService,myTreeService);
+        return new RemoveElementCommand(sendBotMessageService,categoryService);
     }
 }

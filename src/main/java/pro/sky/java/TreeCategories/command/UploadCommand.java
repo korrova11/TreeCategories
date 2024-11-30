@@ -1,25 +1,26 @@
 package pro.sky.java.TreeCategories.command;
 
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import pro.sky.java.TreeCategories.service.MyTreeService;
+import pro.sky.java.TreeCategories.service.CategoryService;
 import pro.sky.java.TreeCategories.service.SendBotMessageService;
 
 import java.io.IOException;
 
-
+@Component
 public class UploadCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
 
-    private final MyTreeService myTreeService;
+    private final CategoryService categoryService;
 
 
-    public UploadCommand(SendBotMessageService sendBotMessageService, MyTreeService myTreeService) {
+    public UploadCommand(SendBotMessageService sendBotMessageService, CategoryService categoryService) {
         this.sendBotMessageService = sendBotMessageService;
-        this.myTreeService = myTreeService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class UploadCommand implements Command {
         if (document.getMimeType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
 
             try {
-                sendBotMessageService.sendMessage(chat, myTreeService.uploadExel(sendBotMessageService.upload(document), chat));
+                sendBotMessageService.sendMessage(chat, categoryService.uploadExel(sendBotMessageService.upload(document), chat));
 
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
